@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">chat</string>
+    <string name="chat">Chat</string>
+    \
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="Logbutton">Login</string>
+    <string name="SignUp">Sign Up</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="profile">Profile</string>
+    <string name="message">message</string>
+    <string name="boi">boi</string>
+    <string name="newChatMessage">Click t o Chat</string>
+    <string name="seen">seen</string>
+</resources>
