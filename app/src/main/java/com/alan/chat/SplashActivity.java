@@ -37,8 +37,6 @@ public class SplashActivity extends AppCompatActivity {
         textView = (TextView) findViewById(R.id.splashText);
 
         mAuth = FirebaseAuth.getInstance();
-
-
         fadeIn = AnimationUtils.loadAnimation(this,fade_in);
         textView.setAnimation(fadeIn);
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -58,11 +56,13 @@ public class SplashActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                timeSkip runnable = new timeSkip(2);
+                new Thread(runnable).start();
                 Intent intent = new Intent(SplashActivity.this,aClass);
                 startActivity(intent);
                 finish();
             }
-        },SPLASH_SCREEN);
+        },1000);
     }
 
     @Override
@@ -77,6 +77,22 @@ public class SplashActivity extends AppCompatActivity {
 
         if (mAuthListener != null){
             mAuth.removeAuthStateListener(mAuthListener);
+        }
+    }
+    class timeSkip implements Runnable{
+        int seconds;
+        public timeSkip(int seconds){
+            this.seconds = seconds;
+        }
+        @Override
+        public void run() {
+            for(int i = 0 ; i < seconds; i ++){
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }

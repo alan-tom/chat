@@ -2,6 +2,7 @@ package com.alan.chat.Adapters;
 
 import android.content.Context;
 import android.text.Layout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +16,9 @@ import com.alan.chat.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHolder> {
 
@@ -35,6 +38,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         int layout;
+        user = FirebaseAuth.getInstance().getCurrentUser();
         if(viewType == MSG_TYPE_LEFT){
             layout = R.layout.chat_item_left;
         }else{
@@ -47,10 +51,18 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Chat chat = mChat.get(position);
         holder.message.setText(chat.getMessage());
-        user = FirebaseAuth.getInstance().getCurrentUser();
-        if(chat.getSender().equals(user.getUid()) && chat.isSeen()){
+
+        if(chat.getSender().equals(user.getUid()) && chat.getIsSeen().equals("true")){
             holder.seen.setVisibility(View.VISIBLE);
         }
+        Timestamp timestamp = new Timestamp(chat.getTimestamp());
+        Date date = new Date(timestamp.getTime());
+        String minutes = "" + date.getMinutes();
+        if (date.getMinutes() < 10){
+            minutes = "0" + date.getMinutes();
+        }
+        String time = "" + date.getHours() + ":" + minutes;
+        holder.timestamp.setText(time);
     }
 
     @Override
@@ -70,7 +82,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
     class ViewHolder extends RecyclerView.ViewHolder{
 
-        TextView message,seen;
+        TextView message,seen,timestamp;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -78,6 +90,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
             message = itemView.findViewById(R.id.messageId);
             seen = itemView.findViewById(R.id.seenId);
             seen.setVisibility(View.GONE);
+            timestamp = itemView.findViewById(R.id.chatTimeId);
         }
     }
 }

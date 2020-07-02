@@ -31,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingHorizontal="8dp"
-            android:hint="@string/username"
+            android:hint="email"
             android:textColor="@color/text"
             android:id="@+id/usernameTextId"/>
     </com.google.android.material.textfield.TextInputLayout>

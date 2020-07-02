@@ -6,4 +6,5 @@
     <color name="background">#424342</color>
     <color name="hint">#dfe3ee</color>
     <color name="text">#f7f7f7</color>
+    <color name="notSeen">#0496FF</color>
 </resources>

@@ -1,7 +1,9 @@
 package com.alan.chat.Adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +27,10 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.ResourceBundle;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     private Context mContext;
@@ -52,9 +57,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         final User user = mUsers.get(position);
         holder.username.setText(user.getUsername());
         if (isChat){
-            getLastMessage(user.getId(),holder.lastMessage);
+            getLastMessage(user.getId(),holder.lastMessage,holder.lastTime);
         }else{
             holder.lastMessage.setText(user.getStatus());
+
         }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -86,26 +92,48 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
             lastTime = (TextView) itemView.findViewById(R.id.timeId);
         }
     }
-    private void getLastMessage(final String userId, final TextView mLastMessage){
+    private void getLastMessage(final String userId, final TextView mLastMessage, final TextView mLastTime){
         theLastMessage ="default";
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Chats");
 
         ref.addValueEventListener(new ValueEventListener() {
+            @SuppressLint("ResourceAsColor")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Boolean seen = false;
+                long time = 0;
+                Boolean me = false;
                 for(DataSnapshot dataSnapshot: snapshot.getChildren()){
                     Chat chat = dataSnapshot.getValue(Chat.class);
                     if(user.getUid().equals(chat.getReceiver()) && userId.equals(chat.getSender()) || userId.equals(chat.getReceiver()) && user.getUid().equals(chat.getSender())){
                         theLastMessage = chat.getMessage();
+                        time = chat.getTimestamp();
+                        if(chat.getIsSeen().equals("true")){
+                            seen = true;
+                        }else {
+                            seen = false;
+                        }
+                        if(chat.getReceiver().equals(user.getUid())) me = true;else me = false;
                     }
                 }
                 switch (theLastMessage){
                     case "default":
                         mLastMessage.setText(R.string.newChatMessage);
+                        mLastTime.setVisibility(View.GONE);
                         break;
                     default:
                         mLastMessage.setText(theLastMessage);
+                        mLastMessage.setMaxLines(1);
+                        if (me && !seen) mLastMessage.setTextColor(mContext.getResources().getColor(R.color.colorAccent));
+                        Timestamp timestamp = new Timestamp(time);
+                        Date date = new Date(timestamp.getTime());
+                        String minutes = "" + date.getMinutes();
+                        if (date.getMinutes() < 10){
+                            minutes = "0" + date.getMinutes();
+                        }
+                        mLastTime.setText("" + date.getHours() + ":" + minutes);
+
                 }
             }
 

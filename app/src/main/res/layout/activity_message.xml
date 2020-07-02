@@ -48,6 +48,7 @@
             android:id="@+id/messageTextId"
             android:hint="@string/message"
             android:textColorHint="@color/colorAccent"
+            android:textColor="@color/colorAccent"
             android:padding="10dp"
             android:textSize="14sp"
             android:layout_weight="1"

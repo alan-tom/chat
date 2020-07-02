@@ -21,12 +21,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/messageId"
-        android:layout_alignParentEnd="true"
         android:paddingHorizontal="10dp"
         android:paddingVertical="3dp"
         android:text="@string/seen"
+        android:layout_toLeftOf="@+id/chatTimeId"
         android:textColor="@color/colorAccent"
         android:textAlignment="textEnd"
         android:id="@+id/seenId"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="5dp"
+        android:paddingEnd="4dp"
+        android:paddingVertical="3dp"
+        android:text="time"
+        android:layout_below="@+id/messageId"
+        android:layout_alignParentEnd="true"
+        android:textColor="@color/colorAccent"
+        android:gravity="center_vertical"
+        android:id="@+id/chatTimeId"/>
 
 </RelativeLayout>

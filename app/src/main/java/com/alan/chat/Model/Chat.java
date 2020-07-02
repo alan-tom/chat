@@ -4,17 +4,20 @@ public class Chat {
     private String sender;
     private String receiver;
     private String message;
-    private boolean isSeen;
+    private String isSeen;
+    private long timestamp = 0 ;
 
     public Chat(){
 
     }
 
-    public Chat(String sender, String receiver, String message, boolean seen) {
+    public Chat(String sender, String receiver, String message, String isSeen, long timestamp) {
         this.sender = sender;
         this.receiver = receiver;
         this.message = message;
-        this.isSeen = seen;
+        this.timestamp = timestamp;
+        this.isSeen = isSeen;
+
     }
 
     public String getSender() {
@@ -32,6 +35,13 @@ public class Chat {
     public void setReceiver(String receiver) {
         this.receiver = receiver;
     }
+    public String getIsSeen() {
+        return isSeen;
+    }
+
+    public void setIsSeen(String isSeen) {
+        this.isSeen = isSeen;
+    }
 
     public String getMessage() {
         return message;
@@ -41,11 +51,19 @@ public class Chat {
         this.message = message;
     }
 
-    public boolean isSeen() {
+    public String isSeen() {
         return isSeen;
     }
 
-    public void setSeen(boolean seen) {
-        this.isSeen = seen;
+    public void setSeen(String isSeen) {
+        this.isSeen = isSeen;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
     }
 }
